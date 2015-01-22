@@ -3,6 +3,39 @@
   <meta charset="UTF-8">
   <title>Vehicles</title>
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+  <style>
+    tr input {
+      display: none;
+    }
+
+    tr.editing input {
+      display: inline;
+    }
+
+    tr span {
+      display: inline;
+    }
+
+    tr.editing span {
+      display: none;
+    }
+
+    tr.editing .edit {
+      display: none;
+    }
+
+    tr .edit {
+      display: inline;
+    }
+
+    tr.editing .done {
+      display: inline;
+    }
+
+    tr .done {
+      display: none;
+    }
+  </style>
 </head>
 <body>
   <table id="vehicles" class="pure-table">
@@ -15,16 +48,15 @@
         <th>Actions</th>
       </tr>
     </thead>
-    <tbody id="entries">
-    </tbody>
+    <tbody id="entries"></tbody>
   </table>
 
   <script type="text/template" id="vehicle-template">
-      <td><%= nickname %></td>
-      <td><%= year %></td>
-      <td><%= make %></td>
-      <td><%= model %></td>
-      <td><a class="del" href="#">Delete</a>  <a href="#">edit</a></td>
+      <td><span><%= nickname %></span> <input class="nickname" type="text" name="nickname" value="<%= nickname %>"></td>
+      <td><span><%= year %></span> <input class="year" type="text" name="year" size="4" value="<%= year %>"></td>
+      <td><span><%= make %></span> <input class="make" type="text" name="make" value="<%= make %>"></td>
+      <td><span><%= model %></span> <input class="model" type="text" name="model" value="<%= model %>"></td>
+      <td><a class="del" href="#">Delete</a>  <a class="edit" href="#">edit</a> <a class="done" href="#">done</a></td>
   </script>
 
   <script src="bower_components/jquery/dist/jquery.js"></script>
