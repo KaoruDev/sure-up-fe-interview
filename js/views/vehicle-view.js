@@ -6,12 +6,22 @@ var app = app || {};
     tagName: 'tr',
     template: _.template($('#vehicle-template').html()),
 
+    events: {
+      "click .del": "delete"
+    },
+
+
     initialize: function() {
     },
 
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
       return this;
+    },
+
+    delete: function() {
+      this.model.destroy();
+      this.remove();
     }
   });
 

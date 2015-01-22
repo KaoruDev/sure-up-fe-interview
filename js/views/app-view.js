@@ -4,6 +4,7 @@ var app = app || {};
 
   app.appView = Backbone.View.extend({
     el: '#vehicles',
+
     initialize: function() {
       this.$list = this.$('#entries');
       this.listenTo(app.vehicles, 'reset', this.addAll);
@@ -18,7 +19,8 @@ var app = app || {};
     addAll: function() {
       this.$list.html('');
       app.vehicles.each(this.addOne, this);
-    }
+    },
+
   });
 
 })(jQuery);
