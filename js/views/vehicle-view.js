@@ -23,8 +23,10 @@ var app = app || {};
     },
 
     delete: function() {
-      this.model.destroy();
-      this.remove();
+      if(confirm("Are you sure you want to delete this entry?")) {
+          this.model.destroy();
+          this.remove();
+      }
     },
 
     edit: function() {

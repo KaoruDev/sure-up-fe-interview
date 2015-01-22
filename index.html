@@ -49,6 +49,15 @@
       </tr>
     </thead>
     <tbody id="entries"></tbody>
+    <tfoot>
+      <tr>
+        <td><a class="add" href="#">Add New Vehicle</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tfoot>
   </table>
 
   <script type="text/template" id="vehicle-template">
@@ -56,7 +65,7 @@
       <td><span><%= year %></span> <input class="year" type="text" name="year" size="4" value="<%= year %>"></td>
       <td><span><%= make %></span> <input class="make" type="text" name="make" value="<%= make %>"></td>
       <td><span><%= model %></span> <input class="model" type="text" name="model" value="<%= model %>"></td>
-      <td><a class="del" href="#">Delete</a>  <a class="edit" href="#">edit</a> <a class="done" href="#">done</a></td>
+      <td><a class="edit" href="#">Edit</a>  <a class="done" href="#">Done</a>  <a class="del" href="#">Delete</a></td>
   </script>
 
   <script src="bower_components/jquery/dist/jquery.js"></script>

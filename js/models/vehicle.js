@@ -11,7 +11,7 @@ var app = app || {};
 
     url: function() {
       var base = '/vehicles/';
-      if (this.isNew()) return base;
+      if (this.isNew()) return app.SERVER_URL + '/vehicles.json?api_key=' + app.API_KEY;
       return app.SERVER_URL + base + encodeURIComponent(this.id) + ".json" + "?api_key=" + app.API_KEY;
     },
 
