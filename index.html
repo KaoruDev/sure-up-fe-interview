@@ -1,11 +1,440 @@
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Sureup Front End Interview Start!</title>
-</head>
-<body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+		<title>Sureup Front End Interview Start!</title>
+		<style>
+		body{
+			min-width: 750px;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		/* Beginning of Title CSS*/
+		#title{
+			position: fixed;
+
+			top:0;
+			left:0;
+
+			width:100%;
+			height: 50px;
+
+			background: #13136C;
+
+			color: white;
+		}
+		
+		#main_text{
+			margin-top: 10px;
+			margin-left: 25px;
+
+			font-size: 25px;
+		}
+		
+		#add{
+			position: fixed;
+			top: 0;
+			right: 0;
+
+			background: rgb(56, 60, 131);
+
+			margin-top: 5px;
+			margin-right: 5px;
+
+			border-radius: 5px;
+
+			color: white;
+			cursor: pointer;
+
+			padding: 10px;
+
+		}
+		
+		#placeholder_title{
+			width: 100%;
+		}
+
+		/* End of Title CSS*/
+
+		/* Beginning of Car Container CSS*/
+		#cars_container{
+			width: 100%;
+		}
+
+		.vehicle_list{
+
+			color: white;
+			margin-top:10px;
+			position: relative;
+			height:21px;
+			padding: 10px;
+			border-radius: 5px;
+			background: #A6A6A6;
+		}
+
+		#title_content{
+			color: black;
+			margin-top:15px;
+			padding: 10px;
+			height:21px;
+			border-style: solid;
+			border-width: 0px 0px 2px 0px;
+		}
+
+		.id{
+			float: left;
+			visibility: hidden
+		}
+
+		.labelz{
+			width: 150px;
+			float: left;
+		}
+
+		.rightLablz {
+			float: right;
+			margin-right: 10px;
+			cursor: pointer;
+		}
+
+		/* End of Car Container CSS*/
+
+		/* Beginning of Modal Window CSS*/
+
+		#response_Update_Cont{
+			width: 500px;
+			height: 290px;
+			display: none;
+		}
+
+		#background_Cont{
+			position:fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0,0,0,0.85);
+			display: none;
+
+		}
+
+		.textboxes{
+			width: 100%;
+			margin-top:15px;
+			padding: 5px;
+		}
+
+		.buttons{
+			color: white;
+			cursor: pointer;
+			margin-top: 10px;
+			padding: 10px;
+			border-radius: 5px;
+		}
+
+		#Cancel{
+			width: 50px;
+			float:left;
+			background: rgb(153, 0, 0);
+		}
+
+		#Append{
+			width: 65px;
+			float:right;
+			background: rgb(62, 153, 0);
+		}
+		#USES_Title{
+			color: white;
+		}
+
+		/* End of Modal Window CSS*/
+		</style>
+	</head>
+	<body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+		<script>
+
+		//Global vars
+		var DOMElement;
+		var accessing;
+		var veichObj;
+		var returned;
+		var retned;
+		
+		$(document).ready(function(){
+
+			    //define placeholder to be the same height as title
+			    $("#placeholder_title").css("height", $("#title").height());
+			    centerScreen($("#response_Update_Cont"));
+
+			    //definitions for URL
+			    var keyToken = "94adf5ac6301cfbf604656db0b433c814535e558";
+			    var urlNeeded = "http://sureup-fe-interview.herokuapp.com/vehicles";
+			    var ending = ".json"
+
+
+
+				//On page load ajax request
+				$.ajax({
+					url: urlNeeded+ending,
+					type: "GET", 
+					data: {api_key: keyToken}, 
+					dataType: "json", 
+					success: function(response){ 
+						appendToBody(response);
+					}
+				});	
+
+				/*
+				 *	POST Function and PUT Function depending on the button values
+				 */
+				 $("#Append").click(function(){
+				 	if($("#Append").html()=="New Car")
+				 	{
+				 		var nicknme = $("#nickname_place").val();
+				 		var year = $("#year_place").val();
+				 		var make = $("#make_place").val();
+				 		var model = $("#model_place").val();
+				 		
+				 		veichObj = {"nickname": nicknme, "year": year, "make": make, "model": model};
+				 		$.ajax({
+				 			url: urlNeeded+ending,
+				 			type: "POST", 
+				 			data: {api_key: keyToken, vehicles: veichObj}, 
+				 			dataType: "json", 
+				 			success: function(response){ 
+				 				var idValue = response.id;
+				 				var nicknameValue = response.nickname;
+				 				var yearValue = response.year;
+				 				var makeValue = response.make;
+				 				var modelValue = response.model;
+				 				CreateDomElement(idValue, nicknameValue, yearValue, makeValue, modelValue);
+				 			},
+				 			statusCode: {
+				 				406: function(response) {
+				 					retned = JSON.parse(response.responseText).errors;
+				 					var returnString = "";
+				 					for(x in retned)
+				 					{
+				 						if((retned.length-1) != x)
+				 						{
+				 							returnString += retned[x] +", and ";
+				 						}else{
+				 							returnString += retned[x]
+				 						}
+				 					}
+				 					alert(returnString);
+				 				}
+				 			}
+				 		});
+				 	}else if($("#Append").html()=="Update")
+				 	{
+				 		var nicknme = $("#nickname_place").val();
+				 		var year = $("#year_place").val();
+				 		var make = $("#make_place").val();
+				 		var model = $("#model_place").val();
+				 		
+				 		veichObj = {"nickname": nicknme, "year": year, "make": make, "model": model};
+
+				 		$.ajax({
+				 			url: urlNeeded+"/"+accessing+ending,
+				 			type: "PUT", 
+				 			data: {api_key: keyToken, vehicles: veichObj}, 
+				 			dataType: "json", 
+				 			success: function(response){
+				 				DOMElement.find( ".id" ).first().html(response.id);
+				 				DOMElement.find( ".nickname" ).first().html(response.nickname);
+				 				DOMElement.find( ".year" ).first().html(response.year);
+				 				DOMElement.find( ".make" ).first().html(response.make);
+				 				DOMElement.find( ".model" ).first().html(response.model);
+				 			},
+				 			statusCode: {
+				 				406: function(response) {
+				 					retned = JSON.parse(response.responseText).errors;
+				 					var returnString = "";
+				 					for(x in retned)
+				 					{
+				 						if((retned.length-1) != x)
+				 						{
+				 							returnString += retned[x] +" and ";
+				 						}else{
+				 							returnString += retned[x]
+				 						}
+				 					}
+				 					alert(returnString);
+				 				}	
+				 			}
+				 		});
+				 	}
+				 	$("#response_Update_Cont").css("display","none");
+				 	$("#background_Cont").css("display","none");
+				 });	
+
+
+
+				/*
+				 *	Delete function
+				 */
+				 $("#cars_container").on('click', '.fa-trash', function() {
+				 	accessing = parseInt($(this).parent().parent().find( ".id" ).first().html());
+				 	DOMElement = $(this).parent().parent();
+				 	$.ajax({
+				 		url: urlNeeded+"/"+accessing+ending,
+				 		type: "DELETE", 
+				 		data: {api_key: keyToken}, 
+				 		dataType: "json", 
+				 		success: function(response){ 
+				 			if(response.success)
+				 			{
+				 				DOMElement.remove();
+				 			}else{
+				 				alert("ERROR Couldn't Reach Server");
+				 			}
+				 		}
+				 	});
+				 });
+
+				 //close modal window
+				 $("#Cancel, #background_Cont").click(function(){
+				 	$("#response_Update_Cont").css("display","none");
+				 	$("#background_Cont").css("display","none");
+				 });
+
+
+				  //open clean modal window
+				  $("#add").click(function(){
+				  	$("#response_Update_Cont").css("display","block");
+				  	$("#background_Cont").css("display","block");
+				  	$("#nickname_place").val("");
+				  	$("#year_place").val("");
+				  	$("#make_place").val("");
+				  	$("#model_place").val("");
+				  	$("#Append").html("New Car");
+				  	$("#USES_Title").html("Append");
+				  	$("#Append").css("width", 65);
+				  });
+
+
+				/*
+				 *	Update function
+				 */
+				 $("#cars_container").on('click', '.fa-pencil', function() {
+				 	accessing = parseInt($(this).parent().parent().find( ".id" ).first().html());
+				 	DOMElement = $(this).parent().parent();
+
+				 	$("#response_Update_Cont").css("display","block");
+				 	$("#background_Cont").css("display","block");
+				 	$("#Append").html("Update");
+				 	$("#Append").css("width", 50);
+				 	$("#USES_Title").html("Update");
+
+				 	$("#nickname_place").val(DOMElement.find( ".nickname" ).first().html());
+				 	$("#year_place").val(DOMElement.find( ".year" ).first().html());
+				 	$("#make_place").val(DOMElement.find( ".make" ).first().html());
+				 	$("#model_place").val(DOMElement.find( ".model" ).first().html());
+				 	
+				 });
+
+
+
+				/*
+				 *   Center object in the screen
+				 *   Pass in a Jquery Object like this $("#idOfObjectRefrenced")
+				 */
+				 function centerScreen(passObj)
+				 {
+					//get the necessary variables
+					var width = $(window).width();
+					var height = $(window).height();
+					var objWidth = passObj.width();
+					var objHeight = passObj.height();
+
+					//calculate the top and left positions
+					var left = ((width-objWidth)/2);
+					var top = ((height-objHeight)/2);
+
+					//set css values to the objects
+					passObj.css("position", "fixed");
+					passObj.css("top", top);
+					passObj.css("left", left);
+				}
+
+				//this function appends the responses from the array to the DOM
+				function appendToBody(response){
+					for(x in response)
+					{
+						var idValue = response[x].id;
+						var nicknameValue = response[x].nickname;
+						var yearValue = response[x].year;
+						var makeValue = response[x].make;
+						var modelValue = response[x].model;
+						createDomElement(idValue, nicknameValue, yearValue, makeValue, modelValue);
+					}
+				}
+
+				//function that creates the dom for a new car
+				function createDomElement(idValue, nicknameValue, yearValue, makeValue, modelValue){
+					$("#cars_container").append("<div class='vehicle_list'><div class='id'>"+idValue+"</div><div class='labelz nickname'>"+nicknameValue+"</div><div class='labelz year'>"+yearValue+"</div><div class='labelz make'>"+makeValue+"</div><div class='labelz model'>"+modelValue+"</div><div class='rightLablz delete'><i class='fa fa-trash'></i></div><div class='rightLablz update'><i class='fa fa-pencil'></i></div></div>");
+				}
+			});
+
+		</script>
+
+		<!--Main title top left-->
+		<div id="title">
+			<p id="main_text">VeiKel</p>
+		</div>
+		<div id="placeholder_title">
+		</div>
+
+		<!--Label Bar in Black on the top listing all the vars-->
+		<div id="title_content">
+			<div class="labelz">
+				Nickname
+			</div>
+			<div class="labelz">
+				Year Made
+			</div>
+			<div class="labelz">
+				Manufacturer
+			</div>
+			<div class="labelz">
+				Model
+			</div>
+		</div>
+		
+		<div id="cars_container">
+		</div>
+
+		<!--Add button on the top right-->
+		<div id="add">
+			ADD CAR
+		</div>
+		
+		<!--Modal window background when filling in data-->
+		<div id="background_Cont">
+		</div>
+
+		<!--Modal window for adding and updating-->
+		<div id="response_Update_Cont">
+			<h1 id="USES_Title">
+				Append
+			</h1>
+			<input type="text" class="textboxes" placeholder="Nickname" id="nickname_place"/><br/>
+			<input type="text" class="textboxes" placeholder="Year" id="year_place"/><br/>
+			<input type="text" class="textboxes" placeholder="Manufacturer" id="make_place"/><br/>
+			<input type="text" class="textboxes" placeholder="Model" id="model_place"/></br>
+			<div id="Cancel" class="buttons">
+				Cancel
+			</div>
+
+			<div id="Append" class="buttons">
+				Update
+			</div>
+		</div>
+	</body>
 </html>
