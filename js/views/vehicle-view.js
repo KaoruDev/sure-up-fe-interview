@@ -4,12 +4,13 @@ var app = app || {};
 
   app.VehicleView = Backbone.View.extend({
     tagName: 'tr',
-    template: _.template($('#vehicle-template').html()),
+    template: _.template($('#vehicle-template').html()), // compile the template
 
     events: {
       "click .del": "delete",
       "click .edit": "edit",
-      "click .done": "doneEditing"
+      "click .done": "doneEditing",
+      "keypress input": "doneOnEnter"
     },
 
 
@@ -34,14 +35,23 @@ var app = app || {};
     },
 
     doneEditing: function() {
-      this.$el.removeClass('editing');
+      // grab all of the data from the form
       var nickname = this.$('.nickname').val();
       var year = this.$('.year').val();
       var make = this.$('.make').val();
       var model = this.$('.model').val();
 
+      // update the model, and change the status
       this.model.set({nickname: nickname, year: year, make: make, model: model});
       this.model.save();
+      this.$el.removeClass('editing');
+
+    },
+
+    doneOnEnter: function(e) {
+      if(e.which == 13) { // enter key
+        this.doneEditing();
+      }
     }
   });
 

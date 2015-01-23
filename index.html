@@ -4,6 +4,20 @@
   <title>Vehicles</title>
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
   <style>
+
+    #container {
+      margin-top: 30px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    table {
+      margin: 0 auto;
+    }
+
+    /* add/hide elements depending whether they're supposed to be visible or not. */
     tr input {
       display: none;
     }
@@ -30,6 +44,7 @@
 
     tr.editing .done {
       display: inline;
+      color: green;
     }
 
     tr .done {
@@ -38,27 +53,30 @@
   </style>
 </head>
 <body>
-  <table id="vehicles" class="pure-table">
-    <thead>
-      <tr>
-        <th>Nickname</th>
-        <th>Year</th>
-        <th>Make</th>
-        <th>Model</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="entries"></tbody>
-    <tfoot>
-      <tr>
-        <td><a class="add" href="#">Add New Vehicle</a></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tfoot>
-  </table>
+  <div id="container">
+    <h1>Vehicle Manager</h1>
+    <table id="vehicles" class="pure-table">
+      <thead>
+        <tr>
+          <th>Nickname</th>
+          <th>Year</th>
+          <th>Make</th>
+          <th>Model</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="entries"></tbody>
+      <tfoot>
+        <tr>
+          <td><a class="add" href="#">Add New Vehicle</a></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 
   <script type="text/template" id="vehicle-template">
       <td><span><%= nickname %></span> <input class="nickname" type="text" name="nickname" value="<%= nickname %>"></td>

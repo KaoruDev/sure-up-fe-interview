@@ -11,7 +11,10 @@ var app = app || {};
 
     url: function() {
       var base = '/vehicles/';
+      // if it's new, the only option is to create, which means we use the /vehicles.json endpoint
       if (this.isNew()) return app.SERVER_URL + '/vehicles.json?api_key=' + app.API_KEY;
+
+      // otherwise, we use the /vehicles/{id}.json endpoint
       return app.SERVER_URL + base + encodeURIComponent(this.id) + ".json" + "?api_key=" + app.API_KEY;
     },
 
@@ -46,8 +49,10 @@ var app = app || {};
       // Ensure that we have the appropriate request data.
       if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
         params.contentType = 'application/json';
-        var json_data = { vehicles: model.toJSON(options) }; /* CHANGE to account for formatting (wrapping vehicles around JSON) */
+        // CHANGED HERE to account for formatting (wrapping vehicles property around JSON) */
+        var json_data = { vehicles: model.toJSON(options) };
         params.data = JSON.stringify(json_data);
+        // END CHANGES
       }
 
       // For older servers, emulate JSON by encoding the request into an HTML-form.
