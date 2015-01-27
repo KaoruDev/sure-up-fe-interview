@@ -62,6 +62,7 @@ function clearAdd() {
   $("#group-model").removeClass("has-error");
   $("#group-model").removeClass("has-feedback");
   $("#group-model .form-control-feedback").remove();
+  $("#input-nickname").focus();
 }
 
 function showVehicles() {
@@ -70,6 +71,7 @@ function showVehicles() {
       showErrors(data);
     } else {
       $("#vehicle-table").html('<tr class="info"><form id="add-vehicle-form"></form><td><div class="form-group" id="group-nickname"><input type="text" class="form-control" id="input-nickname" name="nickname" placeholder="Nickname" form="add-vehicle-form" /></div></td><td><div class="form-group" id="group-year"><input type="text" class="form-control" id="input-year" name="year" placeholder="Year" form="add-vehicle-form" /></div></td><td><div class="form-group" id="group-make"><input type="text" class="form-control" id="input-make" name="make" placeholder="Make" form="add-vehicle-form" /></div></td><td><div class="form-group" id="group-model"><input type="text" class="form-control" id="input-model" name="model" placeholder="Model" form="add-vehicle-form" /></div></td><td><button type="submit" class="btn btn-primary" form="add-vehicle-form"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span> Add</button></td><td><button type="button" class="btn btn-danger" onclick="clearAdd()" ><span class="glyphicon glyphicon-remove" aria-hidden="true" ></span></span> Clear</button></td></tr>');
+      $("#input-nickname").focus();
       $("#add-vehicle-form").on("submit", addVehicle);
       VGLOBAL = {}
       for( var i = 0; i < data.length; i++) {
