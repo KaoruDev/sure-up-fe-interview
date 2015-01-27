@@ -5,3 +5,7 @@
 #vehicle-table button {
   width: 100%;
 }
+
+#vehicle-table td {
+  vertical-align: middle;
+}
