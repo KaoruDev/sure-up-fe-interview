@@ -1,0 +1,11 @@
+#vehicle-table .form-group {
+  margin-bottom: 0;
+}
+
+#vehicle-table button {
+  width: 100%;
+}
+
+#vehicle-table td {
+  vertical-align: middle;
+}
